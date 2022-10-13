@@ -1,15 +1,31 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:kost_app/pages/erorr_page.dart';
 import 'package:kost_app/pages/home_page.dart';
 import 'package:kost_app/shared/theme.dart';
 import 'package:kost_app/widget/facility_item.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+final Uri _url = Uri.parse(
+    'https://www.google.com/search?tbm=lcl&sxsrf=ALiCzsb7c80ulCBxqEAF23zyJJhL2xBBLg:1665547663887&q=PLTA+Kracak&rflfq=1&num=20&stick=H4sIAAAAAAAAABWQO04cYRCEtYEtJIdDNBLSHqEf1a_QMQSW4AIj5GC1aJGAhOuQkXEH38anoCb4gy51_fVVX_1cF1S1JcKitODS4-u1ekp69QxnHZhmros7prurxUpyHN7rMtOKypqw3azpQ3-5tVWo6IiMcAr6Q6KjUkzQrlk1zI8eqg2fKUcjhJ_a7KJldM64CmpdFGZB-0iIZYoWxS5mE0YmDSq1i9eKDKnuIVhIuweaqpbCI2DhYDtisRTQ2ki4tqRqJ3b-JvBMCsZgxCry8wOiT1ZU8FBe5sYCafRJzX4ylTG-dWFuyBRXAc1AqdC_38dyIglGAgz2rqXcJVT4hHiM7VEJVSVqEh8Gr-ivw-H_4eZ-u_z7PL6dnl-3y_Fte_r7cry8P53Or6fz6fLx49efu4ffx9uX7XE7fwO0YvAx3wEAAA&ved=2ahUKEwiJ6vLG6Nn6AhXUQ3wKHRpEDMAQjHJ6BAhOEA0&rldimm=17328275101900903285');
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key});
+  DetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _launchUrl() async {
+      if (!await launchUrl(_url)) {
+        throw Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ErorrPage(),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -244,9 +260,14 @@ class DetailPage extends StatelessWidget {
                               'Jln. Kappan Sukses No. 20\nPalembang',
                               style: greyTextStyle,
                             ),
-                            Image.asset(
-                              'assets/btn_map.png',
-                              width: 40,
+                            InkWell(
+                              onTap: () {
+                                _launchUrl();
+                              },
+                              child: Image.asset(
+                                'assets/btn_map.png',
+                                width: 40,
+                              ),
                             ),
                           ],
                         ),
